@@ -13,7 +13,7 @@
  * the canvas' context (ctx) object globally available to make writing app.js
  * a little simpler to work with.
  */
-
+'use strict';
 var Engine = (function(global) {
     /* Predefine the variables we'll be using within this scope,
      * create the canvas element, grab the 2D context for that canvas
@@ -29,9 +29,11 @@ var Engine = (function(global) {
     canvas.height = 606;
     doc.body.appendChild(canvas);
 
+
     /* This function serves as the kickoff point for the game loop itself
      * and handles properly calling the update and render methods.
      */
+
     function main() {
         /* Get our time delta information which is required if your game
          * requires smooth animation. Because everyone's computer processes
@@ -81,6 +83,15 @@ var Engine = (function(global) {
     function update(dt) {
         updateEntities(dt);
         // checkCollisions();
+
+        //check for collisions
+        checkCollisions();
+
+    }
+
+    function checkCollisions() {
+        // checkCollisions()  
+           
     }
 
     /* This is called by the update function  and loops through all of the
@@ -108,12 +119,12 @@ var Engine = (function(global) {
          * for that particular row of the game level.
          */
         var rowImages = [
-                'images/water-block.png',   // Top row is water
-                'images/stone-block.png',   // Row 1 of 3 of stone
-                'images/stone-block.png',   // Row 2 of 3 of stone
-                'images/stone-block.png',   // Row 3 of 3 of stone
-                'images/grass-block.png',   // Row 1 of 2 of grass
-                'images/grass-block.png'    // Row 2 of 2 of grass
+                'images/water-block.png', // Top row is water
+                'images/stone-block.png', // Row 1 of 3 of stone
+                'images/stone-block.png', // Row 2 of 3 of stone
+                'images/stone-block.png', // Row 3 of 3 of stone
+                'images/grass-block.png', // Row 1 of 2 of grass
+                'images/grass-block.png' // Row 2 of 2 of grass
             ],
             numRows = 6,
             numCols = 5,
@@ -126,17 +137,20 @@ var Engine = (function(global) {
         for (row = 0; row < numRows; row++) {
             for (col = 0; col < numCols; col++) {
                 /* The drawImage function of the canvas' context element
-                 * requires 3 parameters: the image to draw, the x coordinate
-                 * to start drawing and the y coordinate to start drawing.
-                 * We're using our Resources helpers to refer to our images
-                 * so that we get the benefits of caching these images, since
-                 * we're using them over and over.
-                 */
+                 * requires 3 parameters: the image to draw, the x coordinate to start drawing and the y coordinate to start drawing.
+                 * We're using our Resources helpers to refer to our images so that we get the benefits of caching these images, since
+                 * we're using them over and over.*/
                 ctx.drawImage(Resources.get(rowImages[row]), col * 101, row * 83);
             }
         }
 
-
+        //render score and high score
+        /*
+        ctx.font = "30px Georgia";
+        ctx.fillStyle = 'white';
+        ctx.fillText("Goals: ", 7, 80);
+        ctx.fillText("Gem: ", 327, 80);
+        */
         renderEntities();
     }
 
@@ -146,12 +160,10 @@ var Engine = (function(global) {
      */
     function renderEntities() {
         /* Loop through all of the objects within the allEnemies array and call
-         * the render function you have defined.
-         */
+         * the render function you have defined.*/
         allEnemies.forEach(function(enemy) {
             enemy.render();
         });
-
         player.render();
     }
 
@@ -161,6 +173,9 @@ var Engine = (function(global) {
      */
     function reset() {
         // noop
+        // Reset player's position
+        player.reset();
+        console.log('reset Play');
     }
 
     /* Go ahead and load all of the images we know we're going to need to
@@ -172,7 +187,11 @@ var Engine = (function(global) {
         'images/water-block.png',
         'images/grass-block.png',
         'images/enemy-bug.png',
-        'images/char-boy.png'
+        'images/char-boy.png',
+        'images/char-cat-girl.png',
+        'images/char-horn-girl.png',
+        'images/char-pink-girl.png',
+        'images/char-princess-girl.png',
     ]);
     Resources.onReady(init);
 
